@@ -26,11 +26,6 @@ function App() {
     console.log(response.data);
 
     setSelectedTiles(response.data);
-
-    setTilesCoord({
-      start: { x: -1, y: -1 },
-      end: { x: -1, y: -1 },
-    });
   };
   useEffect(() => {
     if (buttonsList.length === 0) {
@@ -50,8 +45,30 @@ function App() {
   }, [tilesCoord]);
 
   return (
-    <div>
-      Grid Cell:
+    <div className="w-max">
+      <article className="prose">
+        <h2>
+          Grid Cell
+          <Button
+            size="sm"
+            variant="flat"
+            className="ml-10"
+            onPress={() => {
+              setTilesCoord({
+                start: { x: -1, y: -1 },
+                end: { x: -1, y: -1 },
+              });
+            }}
+          >
+            Reset
+          </Button>
+        </h2>
+        <div>
+          Start: {tilesCoord.start.x + ", " + tilesCoord.start.y}
+          <br />
+          End: {tilesCoord.end.x + ", " + tilesCoord.end.y}
+        </div>
+      </article>
       <div
         className="p-2"
         style={{
