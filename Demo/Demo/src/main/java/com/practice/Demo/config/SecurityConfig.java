@@ -23,8 +23,6 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${frontend.url}")
-    private String frontendUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
@@ -40,22 +38,7 @@ public class SecurityConfig {
                     auth.requestMatchers(mvcMatcherBuilder.pattern("/todo/**")).permitAll();
                     auth.requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll();
 
-                    auth.anyRequest().authenticated();
-                })
-                .logout((config) -> {
-                    config.invalidateHttpSession(true);
-                    config.clearAuthentication(true);
-                    config.addLogoutHandler(((request, response, authentication) -> {
-                        for (Cookie cookie : request.getCookies()) {
-                            String cookieName = cookie.getName();
-                            Cookie cookieToDelete = new Cookie(cookieName, null);
-                            cookieToDelete.setMaxAge(0);
-                            response.addCookie(cookieToDelete);
-                        }
-
-                    }));
-                    config.logoutUrl("/logout").logoutSuccessUrl(frontendUrl).permitAll();
-                    config.invalidateHttpSession(true);
+                    auth.anyRequest().permitAll();
                 });
 
         return http.build();
